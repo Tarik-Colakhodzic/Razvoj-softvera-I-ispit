@@ -30,7 +30,7 @@
     function Prikazi() {
         var skola = document.getElementById("skola").value;
         var predmet = document.getElementById("predmet").value;
-        $.get("Takmicenje/Prikazi?SkolaFilterId=" + skola + "&PredmetFilterId="
+        $.get("../Takmicenje/Prikazi?SkolaFilterId=" + skola + "&PredmetFilterId="
             + predmet, function(res) {
                 $("#content").html(res);
             })
