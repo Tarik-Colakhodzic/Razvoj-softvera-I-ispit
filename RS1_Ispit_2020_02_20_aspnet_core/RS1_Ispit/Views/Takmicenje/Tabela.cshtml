@@ -1,0 +1,35 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+}
+
+@model List<TakmicenjeIndexVM.Zapis>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <td>Skola</td>
+            <td>Razred</td>
+            <td>Datum</td>
+            <td>Predmet</td>
+            <td>Najbolji</td>
+            <td>Akcija</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Takmicenje.Skola.Naziv</td>
+                <td>@item.Takmicenje.Predmet.Razred</td>
+                <td>@item.Takmicenje.Datum.ToString("dd.MM.yyyy")</td>
+                <td>@item.Takmicenje.Predmet.Naziv</td>
+                <td>@item.NajboljiUcesnik</td>
+                <td><a asp-controller="Takmicenje" asp-action="Rezultati"
+                       asp-route-Id="@item.Takmicenje.Id">Rezultati</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

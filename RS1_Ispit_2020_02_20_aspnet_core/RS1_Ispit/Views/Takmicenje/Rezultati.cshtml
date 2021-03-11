@@ -1,0 +1,100 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model TakmicenjeRezultatiVM
+
+Skola @Model.Takmicenje.Skola.Naziv
+<br />
+Razred @Model.Takmicenje.Predmet.Razred
+<br />
+Predmet @Model.Takmicenje.Predmet.Naziv
+<br />
+Datum @Model.Takmicenje.Datum.ToString("dd.MM.yyyy")
+<br />
+<button class="btn btn-primary" onclick="Zakljucaj()">Zakljucaj</button> 
+<br /><br />
+
+<div id="content">
+    <table class="table table-bordered text-center">
+        <thead>
+            <tr>
+                <td>Odjeljenje</td>
+                <td>Broj u dnevniku</td>
+                <td>Pristupio</td>
+                <td>Bodovi</td>
+                <td>Akcija</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Ucesnici)
+            {
+                <tr>
+                    <td>@item.OdjeljenjeStavka.Odjeljenje.Oznaka</td>
+                    <td>@item.OdjeljenjeStavka.BrojUDnevniku</td>
+                    <td>
+                    <button onclick="Prisustvo(@item.Id)"
+                            @(item.Pristupio ? "style=background-color:green;color:white" : 
+                         "style=background-color:red;color:white")
+                            >
+                        @(item.Pristupio ? "da" : "ne")
+                    </button>
+                    </td>
+                    <td>
+                        <input class="text-center"
+                               onchange="Bodovi(@item.Id)" 
+                               value="@(item.Bodovi == null ? "x" : item.Bodovi.ToString())"
+                               id="@item.Id" style="width: 40px"/>
+                    </td>
+                    <td>
+                        <button onclick="Uredi(@item.Id)"
+                                @(Model.Takmicenje.Zakljucano ? "disabled" : "")>Uredi</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button class="btn btn-primary"
+            onclick="Dodaj()"
+            @(Model.Takmicenje.Zakljucano ? "disabled" : "")>Dodaj ucesnika</button>
+</div>
+<br />
+<a class="btn btn-primary" asp-controller="Takmicenje" asp-action="Dodaj"
+   asp-route-SkolaFilterId="@Model.Takmicenje.SkolaId"
+   asp-route-PredmetFilterId="@Model.Takmicenje.PredmetId"> Novo takmicenje </a>
+
+<script>
+    function Zakljucaj() {
+        $.get("../Zakljucaj?Id=" + @Model.Takmicenje.Id, function() {
+            alert("Takmicenje zakljucano");
+            location.reload();
+        });
+    }
+
+    function Prisustvo(Id) {
+        $.get("../Prisustvo?Id=" + Id, function() {
+            location.reload();
+        })
+    }
+
+    function Bodovi(Id) {
+        var bodovi = document.getElementById(Id).value;
+        $.get("../NoviBodovi?Id=" + Id + "&bodovi=" + bodovi, function() {
+            location.reload();
+        })
+    }
+
+    function Uredi(Id) {
+        $.get("../UrediUcesnika?Id=" + Id + "&TakmicenjeId=" + @Model.Takmicenje.Id, function(res) {
+            $("#content").html(res);
+        })
+    }
+
+    function Dodaj() {
+        $.get("../DodajUcesnika?TakmicenjeId=" + @Model.Takmicenje.Id, function(res) {
+            $("#content").html(res);
+        })
+    }
+</script>

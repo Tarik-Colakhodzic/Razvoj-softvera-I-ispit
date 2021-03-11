@@ -1,0 +1,26 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model TakmicenjeDodajVM
+
+<form asp-controller="Takmicenje" asp-action="Snimi">
+    <div class="form-group">
+        <label asp-for="Skola.Naziv">Skola:</label>
+        <input value="@Model.Skola.Naziv" class="form-control InputPolje" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="Predmet.Naziv">Predmet:</label>
+        <input value="@Model.Predmet.Naziv" class="form-control InputPolje" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="Datum">Datum:</label>
+        <input type="date" asp-for="@Model.Datum" class="form-control InputPolje" />
+    </div>
+    <br />
+    <input asp-for="Skola.Id" value="@Model.Skola.Id" hidden />
+    <input asp-for="Predmet.Id" value="@Model.Predmet.Id" hidden />
+    <button class="btn btn-primary">Snimi</button>
+</form>
